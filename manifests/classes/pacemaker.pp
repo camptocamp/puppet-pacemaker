@@ -193,6 +193,25 @@ class pacemaker::corosync {
             require => Exec["build selinux policy package ha"],
           }
 
+          # Me thinks these should be created by the packages, but, well, it's not Debian..
+          file { "/var/run/crm":
+            ensure  => directory,
+            owner   => "hacluster",
+            group   => "haclient",
+            mode    => 0755,
+            require => package["corosync"],
+          }
+          file { "/var/run/heartbeat":
+            ensure  => directory,
+            owner   => "root",
+            group   => "root",
+            mode    => 0755,
+          }
+
+          Service ["corosync"] {
+            require => [ Package["corosync"], File["/etc/corosync/authkey"], File["/etc/corosync/corosync.conf"],
+                         File["/var/run/crm"], File["/var/run/heartbeat"] ],
+          }
         }
 
         default: { fail("pacemaker::corosync not implemented on $operatingsystem $lsbmajdistrelease")
@@ -207,6 +226,10 @@ class pacemaker::corosync {
 
           package { ["pacemaker", "corosync"]:
             ensure => present
+          }
+
+          Service ["corosync"] {
+            require => [ Package["corosync"], File["/etc/corosync/authkey"], File["/etc/corosync/corosync.conf"] ],
           }
         }
 
@@ -240,7 +263,6 @@ class pacemaker::corosync {
     ensure    => running,
     hasstatus => true,
     enable    => true,
-    require   => [ Package["corosync"], File["/etc/corosync/authkey"], File["/etc/corosync/corosync.conf"] ],
   }
 
 }
