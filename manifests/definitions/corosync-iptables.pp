@@ -14,7 +14,7 @@ Example usage:
   pacemaker::iptables {["192.168.0.2", "192.168.0.3"]: }
 
 */
-define pacemaker::corosync::iptables ($ip1="127.0.0.1", $ip2="127.0.0.1", $corosync_mcast_ip="127.0.0.1") {
+define pacemaker::corosync::iptables ($ip1="127.0.0.1", $ip2="127.0.0.1", $corosync_mcast_ip="127.0.0.1", $mcast_router="") {
 
 #  iptables { "allow pacemaker from $name on port $port":
 #    proto => "udp",
@@ -23,26 +23,28 @@ define pacemaker::corosync::iptables ($ip1="127.0.0.1", $ip2="127.0.0.1", $coros
 #    jump => "ACCEPT",
 #  }
 
-  # open udp and igmp ports for both servers and multicast address
-  $ip_router = regsubst($ip1,'^([.0-9]*)\.[0-9]{1,3}$', '\1.1')
+  if $mcast_router == "" {
+    $router = regsubst($ip1,'^([.0-9]*)\.[0-9]{1,3}$', '\1.1')
+  }
 
-  iptables { "corosync: allow igmp from $ip_router to 224.0.0.1":
+  # open udp and igmp ports for both servers and multicast address
+  iptables { "corosync: allow igmp from $mcast_router to 224.0.0.1":
     proto  => "igmp",
-    source => $ip_router,
+    source => $mcast_router,
     destination => "224.0.0.1",
     jump   => "ACCEPT",
   }
 
-  iptables { "corosync: allow udp from $ip_router to $corosync_mcast_ip":
+  iptables { "corosync: allow udp from $mcast_router to $corosync_mcast_ip":
     proto  => "udp",
-    source => $ip_router,
+    source => $mcast_router,
     destination => $corosync_mcast_ip,
     jump   => "ACCEPT",
   }
 
-  iptables { "corosync: allow igmp from $ip_router to $corosync_mcast_ip":
+  iptables { "corosync: allow igmp from $mcast_router to $corosync_mcast_ip":
     proto  => "igmp",
-    source => $ip_router,
+    source => $mcast_router,
     destination => $corosync_mcast_ip,
     jump   => "ACCEPT",
   }
