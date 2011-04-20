@@ -19,4 +19,17 @@ class pacemaker::drbd inherits drbd::base {
     ensure => undef,
     enable => false,
   }
+
+  selinux::module { "ha-drbd":
+    source => "puppet:///pacemaker/selinux/ha-drbd.te",
+    notify => Selmodule["ha-drbd"],
+    require => Package["corosync"],
+  }
+
+  selmodule { "ha-drbd":
+    ensure => present,
+    syncversion => true,
+    require => Exec["build selinux policy package ha-drbd"],
+  }
+
 }

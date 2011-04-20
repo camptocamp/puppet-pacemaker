@@ -24,6 +24,8 @@ require {
 	class packet_socket { write getattr read bind create ioctl };
 	class lnk_file read;
 	class dir { write getattr setattr read remove_name open search add_name create };
+	type fixed_disk_device_t;
+	class blk_file getattr;
 }
 
 #============= corosync_t ==============
@@ -65,3 +67,5 @@ allow corosync_t sysctl_kernel_t:dir search;
 allow corosync_t sysctl_kernel_t:file read;
 allow corosync_t var_log_t:file { read setattr };
 allow corosync_t var_run_t:dir { create setattr };
+
+allow corosync_t fixed_disk_device_t:blk_file getattr;
