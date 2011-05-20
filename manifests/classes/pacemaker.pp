@@ -231,6 +231,12 @@ class pacemaker::corosync {
           Service ["corosync"] {
             require => [ Package["corosync"], File["/etc/corosync/authkey"], File["/etc/corosync/corosync.conf"] ],
           }
+
+          augeas { "corosync start on boot" :
+            context => "/files/etc/default/corosync",
+            changes => [ "set START yes" ],
+          }
+
         }
 
         default: { fail("pacemaker::corosync not implemented on $operatingsystem $lsbmajdistrelease")
