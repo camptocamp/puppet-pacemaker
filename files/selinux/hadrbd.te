@@ -1,25 +1,25 @@
 
-module ha-drbd 1.0;
+module hadrbd 1.0;
 
 require {
-	type insmod_exec_t;
-	type var_lock_t;
-	type fixed_disk_device_t;
-	type fsadm_exec_t;
-	type corosync_t;
-	type sysfs_t;
-	type var_lib_t;
-	type var_lock_t;
-        type mount_exec_t;
-	type modules_conf_t;
-	type modules_dep_t;
-	type modules_object_t;
-	class blk_file { open read write getattr ioctl };
-	class lnk_file { create read unlink };
-	class dir { open read getattr search };
-	class netlink_socket { create bind read write };
-	class file { open read write execute execute_no_trans getattr lock unlink };
-	class capability sys_admin;
+  type insmod_exec_t;
+  type var_lock_t;
+  type fixed_disk_device_t;
+  type fsadm_exec_t;
+  type corosync_t;
+  type sysfs_t;
+  type var_lib_t;
+  type var_lock_t;
+  type mount_exec_t;
+  type modules_conf_t;
+  type modules_dep_t;
+  type modules_object_t;
+  class blk_file { open read write getattr ioctl };
+  class lnk_file { create read unlink };
+  class dir { open read getattr search };
+  class netlink_socket { create bind read write };
+  class file { open read write execute execute_no_trans getattr lock unlink };
+  class capability sys_admin;
 }
 
 #============= corosync_t ==============
