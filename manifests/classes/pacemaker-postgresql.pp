@@ -13,7 +13,7 @@ Example usage:
   include pacemaker::postgresql
 
 */
-class pacemaker::postgresql inherits postgresql::server {
+class pacemaker::postgresql inherits postgresql::base {
 
   Service["postgresql"] {
     ensure     => undef,
