@@ -1,0 +1,25 @@
+
+module hapostgresql 1.0;
+
+require {
+	type corosync_t;
+	type initrc_var_run_t;
+	type postgresql_tmp_t;
+	type postgresql_t;
+	class file getattr;
+	class process { signal signull };
+	class unix_stream_socket { connectto getattr };
+	class tcp_socket getattr;
+	class fifo_file getattr;
+	class sock_file { write getattr };
+	class udp_socket getattr;
+}
+
+#============= corosync_t ==============
+allow corosync_t initrc_var_run_t:file getattr;
+allow corosync_t postgresql_t:fifo_file getattr;
+allow corosync_t postgresql_t:process { signal signull };
+allow corosync_t postgresql_t:tcp_socket getattr;
+allow corosync_t postgresql_t:udp_socket getattr;
+allow corosync_t postgresql_t:unix_stream_socket { connectto getattr };
+allow corosync_t postgresql_tmp_t:sock_file { write getattr };
