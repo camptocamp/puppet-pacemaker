@@ -1,0 +1,71 @@
+
+module ha 1.0;
+
+require {
+	type var_run_t;
+	type auditd_log_t;
+	type httpd_config_t;
+	type lib_t;
+	type corosync_t;
+	type ifconfig_exec_t;
+	type httpd_suexec_exec_t;
+	type sysctl_kernel_t;
+	type var_log_t;
+	type httpd_log_t;
+	type http_port_t;
+	type httpd_modules_t;
+	type httpd_var_run_t;
+	type httpd_exec_t;
+	class process setpgid;
+	class capability { setuid net_raw chown kill setgid net_admin net_bind_service };
+	class tcp_socket { name_bind name_connect accept listen };
+	class file { execute setattr read create ioctl execute_no_trans write getattr unlink open };
+	class netlink_route_socket nlmsg_write;
+	class packet_socket { write getattr read bind create ioctl };
+	class lnk_file read;
+	class dir { write getattr setattr read remove_name open search add_name create };
+	type fixed_disk_device_t;
+	class blk_file getattr;
+}
+
+#============= corosync_t ==============
+allow corosync_t auditd_log_t:dir { read getattr open };
+allow corosync_t http_port_t:tcp_socket name_bind;
+#!!!! This avc can be allowed using the boolean 'allow_ypbind'
+
+allow corosync_t http_port_t:tcp_socket name_connect;
+allow corosync_t httpd_config_t:dir { read search open getattr };
+allow corosync_t httpd_config_t:file { read getattr open ioctl };
+allow corosync_t httpd_config_t:lnk_file read;
+allow corosync_t httpd_exec_t:file { read getattr open execute execute_no_trans };
+allow corosync_t httpd_log_t:lnk_file read;
+allow corosync_t httpd_modules_t:dir search;
+allow corosync_t httpd_modules_t:file { read getattr open execute };
+allow corosync_t httpd_modules_t:lnk_file read;
+allow corosync_t httpd_suexec_exec_t:file getattr;
+#!!!! The source type 'corosync_t' can write to a 'dir' of the following types:
+# tmp_t, cluster_tmpfs, corosync_var_log_t, tmpfs_t, initrc_state_t, corosync_tmp_t, rgmanager_tmpfs_t, var_lib_t, var_run_t, var_log_t, corosync_tmpfs_t, corosync_var_lib_t, corosync_var_run_t, root_t
+
+allow corosync_t httpd_var_run_t:dir { write remove_name search add_name };
+#!!!! The source type 'corosync_t' can write to a 'file' of the following types:
+# cluster_tmpfs, corosync_var_log_t, tmpfs_t, initrc_state_t, corosync_tmp_t, rgmanager_tmpfs_t, var_lib_t, corosync_tmpfs_t, corosync_var_lib_t, corosync_var_run_t, root_t
+
+allow corosync_t httpd_var_run_t:file { write getattr read create unlink open };
+allow corosync_t ifconfig_exec_t:file { read execute open getattr execute_no_trans };
+allow corosync_t lib_t:file execute_no_trans;
+#!!!! This avc can be allowed using the boolean 'allow_ypbind'
+
+allow corosync_t self:capability net_bind_service;
+allow corosync_t self:capability { setuid net_raw chown kill setgid net_admin };
+allow corosync_t self:netlink_route_socket nlmsg_write;
+allow corosync_t self:packet_socket { write getattr read bind create ioctl };
+allow corosync_t self:process setpgid;
+#!!!! This avc can be allowed using the boolean 'allow_ypbind'
+
+allow corosync_t self:tcp_socket { accept listen };
+allow corosync_t sysctl_kernel_t:dir search;
+allow corosync_t sysctl_kernel_t:file read;
+allow corosync_t var_log_t:file { read setattr };
+allow corosync_t var_run_t:dir { create setattr };
+
+allow corosync_t fixed_disk_device_t:blk_file getattr;
