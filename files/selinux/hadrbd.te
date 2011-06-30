@@ -1,0 +1,42 @@
+
+module hadrbd 1.0;
+
+require {
+  type insmod_exec_t;
+  type var_lock_t;
+  type fixed_disk_device_t;
+  type fsadm_exec_t;
+  type corosync_t;
+  type sysfs_t;
+  type var_lib_t;
+  type var_lock_t;
+  type mount_exec_t;
+  type modules_conf_t;
+  type modules_dep_t;
+  type modules_object_t;
+  class blk_file { open read write getattr ioctl };
+  class lnk_file { create read unlink };
+  class dir { open read getattr search };
+  class netlink_socket { create bind read write };
+  class file { open read write execute execute_no_trans getattr lock unlink };
+  class capability sys_admin;
+}
+
+#============= corosync_t ==============
+allow corosync_t fixed_disk_device_t:blk_file { open read write getattr ioctl };
+allow corosync_t fsadm_exec_t:file { open read execute execute_no_trans getattr };
+allow corosync_t insmod_exec_t:file { open read execute execute_no_trans getattr };
+allow corosync_t modules_conf_t:dir { read search open };
+allow corosync_t modules_conf_t:file { read getattr open };
+allow corosync_t modules_dep_t:file { read getattr open };
+allow corosync_t modules_object_t:dir search;
+allow corosync_t modules_object_t:file { read open };
+allow corosync_t sysfs_t:dir { getattr search };
+allow corosync_t sysfs_t:file { open read getattr };
+allow corosync_t sysfs_t:lnk_file read;
+allow corosync_t var_lib_t:lnk_file { create read unlink };
+allow corosync_t var_lock_t:dir search;
+allow corosync_t var_lock_t:file { open read write getattr lock };
+allow corosync_t mount_exec_t:file { open read execute getattr };
+allow corosync_t self:netlink_socket { create bind read write };
+allow corosync_t self:capability sys_admin;
