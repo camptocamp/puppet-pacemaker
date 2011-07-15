@@ -19,4 +19,31 @@ class pacemaker::drbd inherits drbd::base {
     ensure => undef,
     enable => false,
   }
+
+  case $operatingsystem {
+
+    RedHat,CentOS: {
+      case $lsbmajdistrelease {
+        "4","5": { }
+        default: {
+
+          selinux::module { "hadrbd":
+            source => "puppet:///pacemaker/selinux/hadrbd.te",
+            notify => Selmodule["hadrbd"],
+            require => Package["corosync"],
+          }
+
+          selmodule { "hadrbd":
+            ensure => present,
+            syncversion => true,
+            require => Exec["build selinux policy package hadrbd"],
+          }
+        }
+      }
+    }
+
+    default: { }
+
+  }
+
 }
