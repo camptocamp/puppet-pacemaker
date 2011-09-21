@@ -11,7 +11,11 @@ class pacemaker::nfs {
     RedHat: {
 
       case $lsbmajdistrelease {
-        "6": {
+
+        "4","5" : {
+         }
+
+        default: {
 
           selinux::module { "hanfs":
             source => "puppet:///pacemaker/selinux/hanfs.te",
@@ -27,8 +31,6 @@ class pacemaker::nfs {
 
         }
 
-        default: { 
-        }
       }
     }
 
