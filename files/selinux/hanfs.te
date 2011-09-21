@@ -1,0 +1,38 @@
+
+module hanfs 1.0;
+
+require {
+	type insmod_exec_t;
+	type fsadm_exec_t;
+	type httpd_config_t;
+	type modules_conf_t;
+	type corosync_t;
+	type etc_t;
+	type sysfs_t;
+	type port_t;
+	type etc_runtime_t;
+	type rpc_pipefs_t;
+	type nfs_t;
+	class tcp_socket name_connect;
+	class dir { search read remove_name open getattr };
+	class file { rename execute setattr read create execute_no_trans write getattr link unlink open append };
+	class filesystem { relabelfrom mount unmount };
+}
+
+#============= corosync_t ==============
+allow corosync_t etc_runtime_t:file unlink;
+allow corosync_t etc_t:dir remove_name;
+allow corosync_t etc_t:file { rename write link setattr create unlink append };
+allow corosync_t fsadm_exec_t:file { getattr execute };
+allow corosync_t httpd_config_t:filesystem unmount;
+allow corosync_t insmod_exec_t:file { read getattr open execute execute_no_trans };
+allow corosync_t modules_conf_t:dir { read search open };
+allow corosync_t modules_conf_t:file { read getattr open };
+allow corosync_t nfs_t:dir search;
+allow corosync_t nfs_t:filesystem { relabelfrom mount };
+#!!!! This avc can be allowed using the boolean 'allow_ypbind'
+
+allow corosync_t port_t:tcp_socket name_connect;
+allow corosync_t rpc_pipefs_t:dir search;
+allow corosync_t sysfs_t:dir { search getattr };
+allow corosync_t sysfs_t:file { read getattr open };
