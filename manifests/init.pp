@@ -38,7 +38,7 @@ Example usage:
 
   # use ha.cf template from $moduledir/mymodule/templates/myproject.ha.cf.erb
   $pacemaker_hacf      = "mymodule/myproject.ha.cf.erb"
-  $pacemaker_crmcli    = "puppet:///myproject/crm_config.cli"
+  $pacemaker_crmcli    = "puppet:///modules/myproject/crm_config.cli"
   $pacemaker_interface = "eth1"
   $pacemaker_authkey   = "gugus"
 

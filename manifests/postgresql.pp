@@ -25,7 +25,7 @@ class pacemaker::postgresql inherits postgresql::base {
         default: {
 
           selinux::module { "hapostgresql":
-            source => "puppet:///pacemaker/selinux/hapostgresql.te",
+            source => "puppet:///modules/pacemaker/selinux/hapostgresql.te",
             notify => Selmodule["hapostgresql"],
           }
 

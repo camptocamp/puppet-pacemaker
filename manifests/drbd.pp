@@ -28,7 +28,7 @@ class pacemaker::drbd inherits drbd::base {
         default: {
 
           selinux::module { "hadrbd":
-            source => "puppet:///pacemaker/selinux/hadrbd.te",
+            source => "puppet:///modules/pacemaker/selinux/hadrbd.te",
             notify => Selmodule["hadrbd"],
             require => Package["corosync"],
           }
