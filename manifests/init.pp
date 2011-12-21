@@ -57,7 +57,7 @@ class pacemaker {
   if ( ! $pacemaker_initdead )  { $pacemaker_initdead = "15" }
 
   case $operatingsystem {
-    RedHat: {
+    /RedHat|CentOS/: {
 
       case $lsbmajdistrelease {
         "5": {
