@@ -18,7 +18,7 @@ class pacemaker::apache {
 
   case $operatingsystem {
 
-    RedHat: {
+    /CentOS|RedHat/: {
       include pacemaker::apache-redhat
     }
 
