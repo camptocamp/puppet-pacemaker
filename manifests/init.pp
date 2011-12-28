@@ -143,7 +143,7 @@ class pacemaker {
     # this file contains the configuration to be loaded into the cluster.
     file { "/etc/ha.d/crm-config.cli":
       notify  => Exec["reload crm config"],
-      source  => $pacemaker_crmcli,
+      content => template($pacemaker_crmcli),
       require => Package["heartbeat"],
     }
   }
