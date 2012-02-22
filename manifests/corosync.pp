@@ -47,7 +47,7 @@ class pacemaker::corosync {
             owner   => "hacluster",
             group   => "haclient",
             mode    => 0755,
-            require => package["corosync"],
+            require => Package["corosync"],
           }
           file { "/var/run/heartbeat":
             ensure  => directory,
