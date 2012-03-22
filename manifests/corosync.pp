@@ -4,17 +4,18 @@
 #
 # = Parameters
 #
-# $corosync_mcast_ip:: The multicast IP for cluster communications
+# $mcast_ip:: The multicast IP for cluster communications
 #
-# $corosync_mcast_port:: The multicast port or cluster communications
+# $mcast_port:: The multicast port or cluster communications
 #
-# $corosync_authkey_file:: The source path for the corosync authkey
+# $authkey_file:: The source path for the corosync authkey
 #
+# $conf_template:: The path to the corosync.conf template.
 class pacemaker::corosync (
-    $corosync_mcast_ip,
-    $corosync_mcast_port,
-    $corosync_authkey_file,
-    $corosync_conf_template
+    $mcast_ip,
+    $mcast_port,
+    $authkey_file,
+    $conf_template
   ){
 
   case $operatingsystem {
@@ -104,7 +105,7 @@ class pacemaker::corosync (
     owner   => "root",
     group   => "root",
     mode    => 0600,
-    content => template("$corosync_conf_template"),
+    content => template("$conf_template"),
     require => Package["corosync"],
   }
 
@@ -112,7 +113,7 @@ class pacemaker::corosync (
     owner   => "root",
     group   => "root",
     mode    => 0400,
-    source  => $corosync_authkey_file,
+    source  => $authkey_file,
     require => Package["corosync"],
   }
 
