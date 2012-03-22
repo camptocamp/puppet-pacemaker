@@ -4,16 +4,20 @@
 #
 # = Parameters
 #
-# $mcast_ip:: The multicast IP for cluster communications
+# $ringnumber:: THe corosync ring number (optional)
 #
-# $mcast_port:: The multicast port or cluster communications
+# $mcastaddr:: The multicast IP for cluster communications. default 226.94.1.1
+#
+# $mcastport:: The multicast port or cluster communications. default 4000
 #
 # $authkey_file:: The source path for the corosync authkey
 #
 # $conf_template:: The path to the corosync.conf template.
 class pacemaker::corosync (
-    $mcast_ip,
-    $mcast_port,
+    $ringnumber = '0'
+    $mcastaddr = '226.94.1.1',
+    $mcastport = '4000',
+    $bindnetaddr,
     $authkey_file,
     $conf_template
   ){
