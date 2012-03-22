@@ -14,7 +14,7 @@
 #
 # $conf_template:: The path to the corosync.conf template.
 class pacemaker::corosync (
-    $ringnumber = '0'
+    $ringnumber = '0',
     $mcastaddr = '226.94.1.1',
     $mcastport = '4000',
     $bindnetaddr,
