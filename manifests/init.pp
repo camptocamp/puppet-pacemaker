@@ -45,22 +45,20 @@ Example usage:
   include pacemaker
 
 */
-class pacemaker {
-
-  if ( ! $pacemaker_authkey )   { fail("Mandatory variable \$pacemaker_authkey not set") }
-
-  if ( ! $pacemaker_port )      { $pacemaker_port = "691" }
-  if ( ! $pacemaker_interface ) { $pacemaker_interface = "eth0" }
-  if ( ! $pacemaker_keepalive ) { $pacemaker_keepalive = "1" }
-  if ( ! $pacemaker_warntime )  { $pacemaker_warntime = "6" }
-  if ( ! $pacemaker_deadtime )  { $pacemaker_deadtime = "10" }
-  if ( ! $pacemaker_initdead )  { $pacemaker_initdead = "15" }
+class pacemaker (
+  $pacemaker_authkey,
+  $pacemaker_port = "691",
+  $pacemaker_interface = "eth0",
+  $pacemaker_keepalive = "1",
+  $pacemaker_warntime = "6",
+  $pacemaker_deadtime = "10",
+  $pacemaker_initdead = "15" ){
 
   case $operatingsystem {
     RedHat,CentOS: {
 
       case $lsbmajdistrelease {
-        "5": {
+        5,6: {
 
           # clusterlabs.org hosts an up to date repository for RHEL.
           yumrepo { "server_ha-clustering":
