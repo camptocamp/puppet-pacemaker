@@ -28,11 +28,6 @@ class pacemaker::corosync (
       case $lsbmajdistrelease {
         "6": {
 
-          package { "pacemaker":
-            ensure  => present,
-            require => Package["corosync"],
-          }
-
           package { "corosync":
             ensure  => present,
           }
