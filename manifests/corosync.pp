@@ -109,7 +109,7 @@ class pacemaker::corosync (
     owner   => "root",
     group   => "root",
     mode    => 0600,
-    content => template("$conf_template"),
+    content => template($conf_template),
     require => Package["corosync"],
   }
 
