@@ -64,6 +64,12 @@ class pacemaker (
       }
     }
   }
+  
+  service { 'pacemaker':
+    ensure => running,
+    enable => true,
+    hasstatus => true,
+  }
 
   file { '/etc/pacemaker':
     ensure => directory,
