@@ -1,5 +1,5 @@
 
-module hadrbd 1.0;
+module hadrbd 1.1;
 
 require {
   type insmod_exec_t;
