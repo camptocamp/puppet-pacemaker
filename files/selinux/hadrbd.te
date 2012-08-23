@@ -1,5 +1,5 @@
 
-module hadrbd 1.0;
+module hadrbd 1.1;
 
 require {
   type insmod_exec_t;
@@ -37,6 +37,6 @@ allow corosync_t sysfs_t:lnk_file read;
 allow corosync_t var_lib_t:lnk_file { create read unlink };
 allow corosync_t var_lock_t:dir search;
 allow corosync_t var_lock_t:file { open read write getattr lock };
-allow corosync_t mount_exec_t:file { open read execute getattr };
+allow corosync_t mount_exec_t:file { open read execute getattr execute_no_trans };
 allow corosync_t self:netlink_socket { create bind read write };
 allow corosync_t self:capability sys_admin;
