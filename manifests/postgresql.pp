@@ -13,7 +13,7 @@ Example usage:
   include pacemaker::postgresql
 
 */
-class pacemaker::postgresql inherits postgresql::base {
+class pacemaker::postgresql {
 
   case $operatingsystem {
 
