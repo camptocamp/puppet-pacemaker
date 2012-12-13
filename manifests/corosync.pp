@@ -1,44 +1,35 @@
-class pacemaker::corosync {
-  # TODO: put this variables in pacemaker::corosync:params
-
-  if ( ! $corosync_mcast_ip      ) { fail("Mandatory variable \$corosync_mcast_ip not set") }
-  if ( ! $corosync_mcast_port    ) { fail("Mandatory variable \$corosync_mcast_port not set") }
-  if ( ! $corosync_authkey_file  ) { fail("Mandatory variable \$corosync_authkey_file not set") }
-  if ( ! $corosync_conf_template ) { fail("Mandatory variable \$corosync_conf_template not set") }
-
-  if ( ! $pacemaker_authkey )   { fail("Mandatory variable \$pacemaker_authkey not set") }
-
-  if ( ! $pacemaker_interface ) { $pacemaker_interface = "eth0" }
-  if ( ! $pacemaker_keepalive ) { $pacemaker_keepalive = "1" }
-  if ( ! $pacemaker_warntime )  { $pacemaker_warntime = "6" }
-  if ( ! $pacemaker_deadtime )  { $pacemaker_deadtime = "10" }
-  if ( ! $pacemaker_initdead )  { $pacemaker_initdead = "15" }
+#
+# = Class pacemaker::corosync
+# Install and configure the corosync cluster communication services.
+#
+# = Parameters
+#
+# $ringnumber:: THe corosync ring number (optional)
+#
+# $mcastaddr:: The multicast IP for cluster communications. default 226.94.1.1
+#
+# $mcastport:: The multicast port or cluster communications. default 4000
+#
+# $authkey_file:: The source path for the corosync authkey
+#
+# $conf_template:: The path to the corosync.conf template.
+class pacemaker::corosync (
+    $ringnumber = '0',
+    $mcastaddr = '226.94.1.1',
+    $mcastport = '4000',
+    $bindnetaddr,
+    $authkey_file,
+    $conf_template
+  ){
 
   case $operatingsystem {
-    RedHat: {
+    RedHat,CentOS: {
 
       case $lsbmajdistrelease {
         "6": {
 
-          package { "pacemaker":
-            ensure  => present,
-            require => Package["corosync"],
-          }
-
           package { "corosync":
             ensure  => present,
-          }
-
-          selinux::module { "ha":
-            source => "puppet:///modules/pacemaker/selinux/ha.te",
-            notify => Selmodule["ha"],
-            require => Package["corosync"],
-          }
-
-          selmodule { "ha":
-            ensure => present,
-            syncversion => true,
-            require => Exec["build selinux policy package ha"],
           }
 
           # Me thinks these should be created by the packages, but, well, it's not Debian..
@@ -101,7 +92,7 @@ class pacemaker::corosync {
     owner   => "root",
     group   => "root",
     mode    => 0600,
-    content => template("$corosync_conf_template"),
+    content => template($conf_template),
     require => Package["corosync"],
   }
 
@@ -109,7 +100,7 @@ class pacemaker::corosync {
     owner   => "root",
     group   => "root",
     mode    => 0400,
-    source  => $corosync_authkey_file,
+    source  => $authkey_file,
     require => Package["corosync"],
   }
 

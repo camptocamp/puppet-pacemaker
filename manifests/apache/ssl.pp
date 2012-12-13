@@ -17,7 +17,7 @@ class pacemaker::apache::ssl {
 
   case $operatingsystem {
 
-    RedHat: {
+    /CentOS|RedHat/: {
       include apache::ssl::redhat
     }
 

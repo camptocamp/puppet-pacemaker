@@ -8,7 +8,7 @@ Install SELinux rules to use NFS from pacemaker
 
 class pacemaker::nfs {
   case $operatingsystem {
-    RedHat: {
+    RedHat,CentOS: {
 
       case $lsbmajdistrelease {
 
