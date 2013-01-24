@@ -1,0 +1,9 @@
+# file installed but NOT managed by Puppet
+/var/log/corosync.log {
+  missingok
+  nocompress
+  notifempty
+  <%= pacemaker_log_time_unit %>
+  rotate <%= pacemaker_log_units_hold %>
+  copytruncate
+}
