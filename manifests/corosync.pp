@@ -1,3 +1,7 @@
+#
+# == Class: pacemaker::corosync
+#
+# $pacemaker_log_time_unit: a valid value for logrotate: daily, monthly, weekly
 class pacemaker::corosync {
   # TODO: put this variables in pacemaker::corosync:params
 
@@ -13,6 +17,15 @@ class pacemaker::corosync {
   if ( ! $pacemaker_warntime )  { $pacemaker_warntime = "6" }
   if ( ! $pacemaker_deadtime )  { $pacemaker_deadtime = "10" }
   if ( ! $pacemaker_initdead )  { $pacemaker_initdead = "15" }
+
+  # For logrotate configuration
+   if ( ! $pacemaker_logrotate_template ) { $pacemaker_logrotate_template = 'pacemaker/corosync.logrotate.erb' }
+   if ( ! $pacemaker_log_units_hold )  { $pacemaker_log_units_hold = '32' }
+
+  $pacemaker_log_time_unit = $pacemaker_log_time_unit ? {
+    /daily|weekly|monthly/ => $pacemaker_log_time_unit,
+    default => 'daily',
+  }
 
   case $operatingsystem {
     RedHat: {
@@ -111,6 +124,14 @@ class pacemaker::corosync {
     mode    => 0400,
     source  => $corosync_authkey_file,
     require => Package["corosync"],
+  }
+
+  file { '/etc/logrotate.d/corosync':
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    content => template( $pacemaker_logrotate_template ),
+    replace => false,
   }
 
   service { "corosync":
