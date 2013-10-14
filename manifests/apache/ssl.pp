@@ -10,7 +10,7 @@ Requires:
 Example usage:
   include pacemaker::apache
   include pacemaker::apache::ssl
-  apache::vhost {$fqdn: ensure => present }
+  apache_c2c::vhost {$fqdn: ensure => present }
 
 */
 class pacemaker::apache::ssl {
@@ -18,11 +18,11 @@ class pacemaker::apache::ssl {
   case $operatingsystem {
 
     RedHat: {
-      include apache::ssl::redhat
+      include apache_c2c::ssl::redhat
     }
 
     Debian: {
-      include apache::ssl::debian
+      include apache_c2c::ssl::debian
     }
   }
 }
