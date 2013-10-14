@@ -11,7 +11,7 @@ Requires:
 
 Example usage:
   include pacemaker::apache
-  apache::vhost {$fqdn: ensure => present }
+  apache_c2c::vhost {$fqdn: ensure => present }
 
 */
 class pacemaker::apache {
