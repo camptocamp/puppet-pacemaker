@@ -4,7 +4,7 @@ Facter.add('crm_support') do
   confine :kernel => :linux
 
   setcode do
-    not Facter::Util::Resolution.exec('crm_resource').nil?
+    not Facter::Util::Resolution.which('crm_resource').nil?
   end
 end
 
