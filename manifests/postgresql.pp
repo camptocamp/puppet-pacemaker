@@ -26,13 +26,6 @@ class pacemaker::postgresql {
 
           selinux::module { "hapostgresql":
             source => "puppet:///modules/pacemaker/selinux/hapostgresql.te",
-            notify => Selmodule["hapostgresql"],
-          }
-
-          selmodule { "hapostgresql":
-            ensure => present,
-            syncversion => true,
-            require => Exec["build selinux policy package hapostgresql"],
           }
 
         }

@@ -19,14 +19,7 @@ class pacemaker::nfs {
 
           selinux::module { "hanfs":
             source => "puppet:///modules/pacemaker/selinux/hanfs.te",
-            notify => Selmodule["hanfs"],
             require => Package["corosync"],
-          }
-
-          selmodule { "hanfs":
-            ensure => present,
-            syncversion => true,
-            require => Exec["build selinux policy package hanfs"],
           }
 
         }
