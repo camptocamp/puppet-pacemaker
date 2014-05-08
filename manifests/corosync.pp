@@ -44,14 +44,7 @@ class pacemaker::corosync {
 
           selinux::module { "ha":
             source => "puppet:///modules/pacemaker/selinux/ha.te",
-            notify => Selmodule["ha"],
             require => Package["corosync"],
-          }
-
-          selmodule { "ha":
-            ensure => present,
-            syncversion => true,
-            require => Exec["build selinux policy package ha"],
           }
 
           # Me thinks these should be created by the packages, but, well, it's not Debian..
