@@ -2,35 +2,27 @@
 # == Class: pacemaker::corosync
 #
 # $pacemaker_log_time_unit: a valid value for logrotate: daily, monthly, weekly
-class pacemaker::corosync {
-  # TODO: put this variables in pacemaker::corosync:params
-
-  if ( ! $corosync_mcast_ip      ) { fail("Mandatory variable \$corosync_mcast_ip not set") }
-  if ( ! $corosync_mcast_port    ) { fail("Mandatory variable \$corosync_mcast_port not set") }
-  if ( ! $corosync_authkey_file  ) { fail("Mandatory variable \$corosync_authkey_file not set") }
-  if ( ! $corosync_conf_template ) { fail("Mandatory variable \$corosync_conf_template not set") }
-
-  if ( ! $pacemaker_authkey )   { fail("Mandatory variable \$pacemaker_authkey not set") }
-
-  if ( ! $pacemaker_interface ) { $pacemaker_interface = "eth0" }
-  if ( ! $pacemaker_keepalive ) { $pacemaker_keepalive = "1" }
-  if ( ! $pacemaker_warntime )  { $pacemaker_warntime = "6" }
-  if ( ! $pacemaker_deadtime )  { $pacemaker_deadtime = "10" }
-  if ( ! $pacemaker_initdead )  { $pacemaker_initdead = "15" }
-
+class pacemaker::corosync(
+  $corosync_mcast_ip,
+  $corosync_mcast_port,
+  $corosync_authkey_file,
+  $corosync_conf_template,
+  $pacemaker_authkey,
+  $pacemaker_interface          = 'eth0',
+  $pacemaker_keepalive          = 1,
+  $pacemaker_warntime           = 6,
+  $pacemaker_deadtime           = 10,
+  $pacemaker_initdead           = 15,
   # For logrotate configuration
-   if ( ! $pacemaker_logrotate_template ) { $pacemaker_logrotate_template = 'pacemaker/corosync.logrotate.erb' }
-   if ( ! $pacemaker_log_units_hold )  { $pacemaker_log_units_hold = '32' }
+  $pacemaker_logrotate_template = 'pacemaker/corosync.logrotate.erb',
+  $pacemaker_log_units_hold     = 32,
+  $pacemaker_log_time_unit      = 'daily',
+) {
 
-  $pacemaker_log_time_unit = $pacemaker_log_time_unit ? {
-    /daily|weekly|monthly/ => $pacemaker_log_time_unit,
-    default => 'daily',
-  }
-
-  case $operatingsystem {
+  case $::operatingsystem {
     RedHat: {
 
-      case $lsbmajdistrelease {
+      case $::lsbmajdistrelease {
         "6": {
 
           package { "pacemaker":
