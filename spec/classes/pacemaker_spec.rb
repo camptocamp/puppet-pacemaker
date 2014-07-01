@@ -45,6 +45,7 @@ describe 'pacemaker' do
     let (:facts) { {
       :operatingsystem => 'RedHat',
       :osfamily        => 'RedHat',
+      :architecture    => 'i386',
     } }
 
     context 'when on unknown RedHat version' do
