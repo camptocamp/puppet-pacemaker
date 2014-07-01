@@ -64,10 +64,10 @@ class pacemaker(
   $pacemaker_crmcli    = undef,
 ) {
 
-  case $operatingsystem {
+  case $::operatingsystem {
     RedHat: {
 
-      case $lsbmajdistrelease {
+      case $::lsbmajdistrelease {
         "5": {
 
           # clusterlabs.org hosts an up to date repository for RHEL.
@@ -108,6 +108,10 @@ class pacemaker(
       package { ["pacemaker", "heartbeat"]:
         ensure => present
       }
+    }
+
+    default: {
+      fail "Unsupported operating system ${::operatingsystem}"
     }
   }
 
