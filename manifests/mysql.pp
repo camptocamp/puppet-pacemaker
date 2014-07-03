@@ -13,6 +13,13 @@ Example usage:
   include pacemaker::mysql
 
 */
-class pacemaker::mysql inherits mysql::server {
-  include pacemaker::mysql::base
+class pacemaker::mysql (
+  $performance,
+  $config_override = {},
+) {
+  class {'::mysql::server':
+    performance       => $performance,
+    config_override   => $config_override,
+    unmanaged_service => true,
+  }
 }
