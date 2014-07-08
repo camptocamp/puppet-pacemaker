@@ -1,6 +1,6 @@
 class pacemaker::apache-debian inherits apache_c2c::debian {
 
-  Service["apache"] {
+  Service['httpd'] {
     ensure => undef,
     enable => false,
   }
