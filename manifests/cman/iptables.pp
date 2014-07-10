@@ -25,66 +25,66 @@ define pacemaker::cman::iptables (
 ) {
 
   # open igmp from router to mcast
-  iptables { "cluster: $subnetrouter to all-hosts group":
-    jump        => 'ACCEPT',
+  firewall { "100 cluster ${subnetrouter} to all-hosts group":
+    action      => 'accept',
     proto       => 'igmp',
     source      => $subnetrouter,
     destination => '224.0.0.1',
   }
 
-  iptables { "cluster: $subnetrouter to $mcastip":
-    jump        => 'ACCEPT',
+  firewall { "100 cluster ${subnetrouter} to ${mcastip}":
+    action      => 'accept',
     proto       => 'igmp',
     source      => $subnetrouter,
     destination => $mcastip,
   }
 
   # open upd port $port between each servers
-  iptables { "cluster: allow udp from $ip1 to $ip2":
-    jump        => 'ACCEPT',
+  firewall { "100 cluster allow udp from ${ip1} to ${ip2}":
+    action      => 'accept',
     proto       => 'udp',
     source      => $ip1,
     destination => $ip2,
   }
 
-  iptables { "cluster: allow udp from $ip2 to $ip1":
-    jump        => 'ACCEPT',
+  firewall { "100 cluster allow udp from ${ip2} to ${ip1}":
+    action      => 'accept',
     proto       => 'udp',
     source      => $ip2,
     destination => $ip1,
   }
 
   # open udp port between each server and the multicast address
-  iptables { "cluster: allow udp from $ip1 to $mcastip":
-    jump        => 'ACCEPT',
+  firewall { "100 cluster allow udp from ${ip1} to ${mcastip}":
+    action      => 'accept',
     proto       => 'udp',
     source      => $ip1,
     destination => $mcastip,
     sport       => $port - 1,
-    dport       => $port
+    dport       => $port,
   }
 
-  iptables { "cluster: allow udp from $ip2 to $mcastip":
-    jump        => 'ACCEPT',
+  firewall { "100 cluster allow udp from ${ip2} to ${mcastip}":
+    action      => 'accept',
     proto       => 'udp',
     source      => $ip2,
     destination => $mcastip,
     sport       => $port - 1,
-    dport       => $port
+    dport       => $port,
   }
 
   # Allow igmp from each server to multicast address
-  iptables { "cluster: allow igmp from $ip1 to $mcastip":
-    jump   => 'ACCEPT',
-    proto  => 'igmp',
-    source => $ip1,
+  firewall { "100 cluster allow igmp from ${ip1} to ${mcastip}":
+    action      => 'accept',
+    proto       => 'igmp',
+    source      => $ip1,
     destination => $mcastip,
   }
 
-  iptables { "cluster: allow igmp from $ip2 to $mcastip":
-    jump   => 'ACCEPT',
-    proto  => 'igmp',
-    source => $ip2,
+  firewall { "100 cluster allow igmp from ${ip2} to ${mcastip}":
+    action      => 'accept',
+    proto       => 'igmp',
+    source      => $ip2,
     destination => $mcastip,
   }
 
