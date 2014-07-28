@@ -14,7 +14,7 @@ Example usage:
 
 */
 class pacemaker::mysql (
-  $performance,
+  $performance = undef,
   $config_override = {},
 ) {
   class {'::mysql::server':
