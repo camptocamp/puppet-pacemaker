@@ -1,10 +1,18 @@
 # crm_support: true/nil
 # Whether there is Pacemaker installed
+#
+
+if Facter.version < '2.0.0'
+  Facterclass=Facter::Util::Resolution
+else
+  Facterclass=Facter::Core::Execution
+end
+
 Facter.add('crm_support') do
   confine :kernel => :linux
 
   setcode do
-    not Facter::Util::Resolution.which('crm_resource').nil?
+    not Facterclass.which('crm_resource').nil?
   end
 end
 
@@ -13,7 +21,7 @@ crm_resources = []
 Facter.add('crm_raw_resources') do
   confine :crm_support => true
 
-  resources = Facter::Util::Resolution.exec('crm_resource -l')
+  resources = Facterclass.exec('crm_resource -l')
   unless resources.empty?
     crm_resources = resources.split
     setcode { crm_resources.join(',') }
@@ -22,7 +30,7 @@ end
 
 crm_resources.each do |resource|
   command = "crm_resource --resource #{resource} --locate"
-  crm_output = Facter::Util::Resolution.exec(command)
+  crm_output = Facterclass.exec(command)
   location = /^resource #{resource} is running on: (.+?)\s?\w*$/.match(crm_output)[1]
   next if location.empty?
   
