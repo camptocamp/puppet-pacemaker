@@ -1,19 +1,16 @@
-/*
-
-== Definition: pacemaker::corosync::iptables
-
-A helper which allows setting iptables rules for pacemaker.
-
-Parameters:
-- *$name*: the address or address block you want to allow heartbeat packets
-  from.
-
-Example usage:
-
-  pacemaker::iptables {"10.0.1.0/24": port => "1234" }
-  pacemaker::iptables {["192.168.0.2", "192.168.0.3"]: }
-
-*/
+# == Definition: pacemaker::corosync::iptables
+#
+# A helper which allows setting iptables rules for pacemaker.
+#
+# Parameters:
+# - *$name*: the address or address block you want to allow heartbeat packets
+#   from.
+#
+# Example usage:
+#
+#   pacemaker::iptables {"10.0.1.0/24": port => "1234" }
+#   pacemaker::iptables {["192.168.0.2", "192.168.0.3"]: }
+#
 define pacemaker::corosync::iptables ($ip1="127.0.0.1", $ip2="127.0.0.1", $corosync_mcast_ip="127.0.0.1", $mcast_router="") {
 
 #  iptables { "allow pacemaker from $name on port $port":
