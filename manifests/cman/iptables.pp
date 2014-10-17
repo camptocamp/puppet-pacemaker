@@ -17,11 +17,11 @@
 #   pacemaker::cman::iptables { 'demo': ip1 => "192.168.0.2", ip2 => "192.168.0.3", mcastip => "239.0.0.11", subnetrouteur => "192.168.0.1" }
 # 
 define pacemaker::cman::iptables (
-  $ip1="127.0.0.1",
-  $ip2="127.0.0.1",
-  $mcastip="127.0.0.1",
-  $subnetrouter="127.0.0.1",
-  $port="5405",
+  $ip1='127.0.0.1',
+  $ip2='127.0.0.1',
+  $mcastip='127.0.0.1',
+  $subnetrouter='127.0.0.1',
+  $port='5405',
 ) {
 
   # open igmp from router to mcast

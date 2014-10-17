@@ -68,44 +68,44 @@ class pacemaker(
     RedHat: {
 
       case $::lsbmajdistrelease {
-        "5": {
+        '5': {
 
           # clusterlabs.org hosts an up to date repository for RHEL.
-          yumrepo { "server_ha-clustering":
-            descr => "High Availability/Clustering server technologies (RHEL_${lsbmajdistrelease})",
-            baseurl => "http://www.clusterlabs.org/rpm/epel-${lsbmajdistrelease}/",
-            enabled => 1,
+          yumrepo { 'server_ha-clustering':
+            descr    => "High Availability/Clustering server technologies (RHEL_${::lsbmajdistrelease})",
+            baseurl  => "http://www.clusterlabs.org/rpm/epel-${::lsbmajdistrelease}/",
+            enabled  => 1,
             gpgcheck => 0,
           }
 
           # ensure file is managed in case we want to purge /etc/yum.repos.d/
           # http://projects.puppetlabs.com/issues/3152
-          file { "/etc/yum.repos.d/server_ha-clustering.repo":
+          file { '/etc/yum.repos.d/server_ha-clustering.repo':
             ensure  => present,
-            mode    => 0644,
-            owner   => "root",
-            require => Yumrepo["server_ha-clustering"],
+            mode    => '0644',
+            owner   => 'root',
+            require => Yumrepo['server_ha-clustering'],
           }
 
-          package { "pacemaker.${architecture}":
+          package { "pacemaker.${::architecture}":
             ensure  => present,
-            alias   => "pacemaker",
-            require => Package["heartbeat"],
+            alias   => 'pacemaker',
+            require => Package['heartbeat'],
           }
 
-          package { "heartbeat.${architecture}":
+          package { "heartbeat.${::architecture}":
             ensure => present,
-            alias  => "heartbeat",
+            alias  => 'heartbeat',
           }
         }
 
-        default: { fail("pacemaker not implemented on $operatingsystem $lsbmajdistrelease")
+        default: { fail("pacemaker not implemented on ${::operatingsystem} ${::lsbmajdistrelease}")
         }
       }
     }
 
     Debian: {
-      package { ["pacemaker", "heartbeat"]:
+      package { ['pacemaker', 'heartbeat']:
         ensure => present
       }
     }
@@ -117,46 +117,47 @@ class pacemaker(
 
 
 
-  file { "/etc/ha.d/authkeys":
+  file { '/etc/ha.d/authkeys':
     content => "auth 1\n1 sha1 ${pacemaker_authkey}\n",
-    owner   => "root",
-    mode    => 0600,
-    notify  => Service["heartbeat"],
-    require => Package["heartbeat"],
+    owner   => 'root',
+    mode    => '0600',
+    notify  => Service['heartbeat'],
+    require => Package['heartbeat'],
   }
 
   # heartbeat configuration file, which can be either an ERB template located
   # at $pacemaker_hacf, or the default file shipped with this module.
-  file { "/etc/ha.d/ha.cf":
-    content => $pacemaker_hacf ? {
-      default => template($pacemaker_hacf),
-      ""      => template("pacemaker/ha.cf.erb"),
-    },
-    notify  => Service["heartbeat"],
-    require => Package["heartbeat"],
+  $file_content = $pacemaker_hacf ? {
+    default => template($pacemaker_hacf),
+    ''      => template('pacemaker/ha.cf.erb'),
+  }
+  file { '/etc/ha.d/ha.cf':
+    content => $file_content,
+    notify  => Service['heartbeat'],
+    require => Package['heartbeat'],
   }
 
-  service { "heartbeat":
+  service { 'heartbeat':
     ensure    => running,
     hasstatus => true,
     enable    => true,
-    require   => Package["heartbeat"],
+    require   => Package['heartbeat'],
   }
 
   if ( $pacemaker_crmcli ) {
 
     # actually load the configuration into heartbeat
-    exec { "reload crm config":
-      command     => "crm configure load replace /etc/ha.d/crm-config.cli",
+    exec { 'reload crm config':
+      command     => 'crm configure load replace /etc/ha.d/crm-config.cli',
       refreshonly => true,
-      require     => Service["heartbeat"],
+      require     => Service['heartbeat'],
     }
 
     # this file contains the configuration to be loaded into the cluster.
-    file { "/etc/ha.d/crm-config.cli":
-      notify  => Exec["reload crm config"],
+    file { '/etc/ha.d/crm-config.cli':
+      notify  => Exec['reload crm config'],
       source  => $pacemaker_crmcli,
-      require => Package["heartbeat"],
+      require => Package['heartbeat'],
     }
   }
 }

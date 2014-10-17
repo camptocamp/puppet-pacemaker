@@ -12,17 +12,17 @@
 #
 class pacemaker::postgresql {
 
-  case $operatingsystem {
+  case $::osfamily {
 
-    RedHat,CentOS: {
-      case $lsbmajdistrelease {
+    RedHat: {
+      case $::lsbmajdistrelease {
 
-        "4","5": { }
+        '4','5': { }
 
         default: {
 
-          selinux::module { "hapostgresql":
-            source => "puppet:///modules/pacemaker/selinux/hapostgresql.te",
+          selinux::module { 'hapostgresql':
+            source => 'puppet:///modules/pacemaker/selinux/hapostgresql.te',
           }
 
         }
