@@ -12,13 +12,14 @@
 #   pacemaker::iptables {"10.0.1.0/24": port => "1234" }
 #   pacemaker::iptables {["192.168.0.2", "192.168.0.3"]: }
 #
+define pacemaker::iptables(
+  $port = '691',
+) {
 
-define pacemaker::iptables ($port="691") {
-
-  iptables { "allow pacemaker from $name on port $port":
-    proto => "udp",
-    dport => $port,
+  iptables { 'allow pacemaker from $name on port $port':
+    proto  => 'udp',
+    dport  => $port,
     source => $name,
-    jump => "ACCEPT",
+    jump   => 'ACCEPT',
   }
 }

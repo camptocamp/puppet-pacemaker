@@ -13,7 +13,7 @@
 #
 class pacemaker::apache {
 
-  case $operatingsystem {
+  case $::operatingsystem {
 
     RedHat: {
       include pacemaker::apache::redhat

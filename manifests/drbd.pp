@@ -12,20 +12,20 @@
 #
 class pacemaker::drbd inherits drbd::base {
 
-  Service["drbd"] {
+  Service['drbd'] {
     ensure => undef,
     enable => false,
   }
 
-  case $operatingsystem {
+  case $::operatingsystem {
 
     RedHat,CentOS: {
-      case $lsbmajdistrelease {
-        "4","5": { }
+      case $::lsbmajdistrelease {
+        '4','5': { }
         default: {
-          selinux::module { "hadrbd":
-            source => "puppet:///modules/pacemaker/selinux/hadrbd.te",
-            require => Package["corosync"],
+          selinux::module { 'hadrbd':
+            source  => 'puppet:///modules/pacemaker/selinux/hadrbd.te',
+            require => Package['corosync'],
           }
         }
       }

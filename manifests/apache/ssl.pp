@@ -12,7 +12,7 @@
 #
 class pacemaker::apache::ssl {
 
-  case $operatingsystem {
+  case $::operatingsystem {
 
     RedHat: {
       include apache_c2c::ssl::redhat
@@ -20,6 +20,10 @@ class pacemaker::apache::ssl {
 
     Debian: {
       include apache_c2c::ssl::debian
+    }
+
+    default: {
+      fail "Unsupported Operating System: ${::operatingsystem}"
     }
   }
 }
