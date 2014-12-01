@@ -16,7 +16,7 @@ define pacemaker::iptables(
   $port = '691',
 ) {
 
-  iptables { 'allow pacemaker from $name on port $port':
+  iptables { "allow pacemaker from $name on port $port":
     proto  => 'udp',
     dport  => $port,
     source => $name,
