@@ -31,7 +31,7 @@ end
 crm_resources.each do |resource|
   command = "crm_resource --resource #{resource} --locate"
   crm_output = Facterclass.exec(command)
-  location = /^resource #{resource} is running on: (.+?)\s?\w*$/.match(crm_output)[1]
+  location = /^resource #{resource} is running on: (.+?)\s?\w*$/.match(crm_output).nil? ? '' : Regexp.last_match[1]
   next if location.empty?
   
   if resource =~ /^\w+:(0|1)$/ # Master/Slave resources
