@@ -1,8 +1,6 @@
 require 'spec_helper'
+
 describe 'pacemaker' do
-  let (:pre_condition) {
-    "Exec { path => '/foo' }"
-  }
 
   let (:params) { {
     :pacemaker_authkey => 'foo',
@@ -18,56 +16,21 @@ describe 'pacemaker' do
     } }
 
     it 'should fail' do
-      expect { should compile }.to raise_error(Puppet::Error, /Unsupported operating system/)
+      expect { should compile }.to raise_error(/Unsupported operating system/)
     end
   end
 
-  context 'when on Debian' do
-    let (:facts) { {
-      :operatingsystem => 'Debian',
-      :osfamily        => 'Debian',
-    } }
-
-    context 'when not passing parameters' do
-      let (:params) { { } }
-
-      it 'should fail' do
-        expect { should compile }.to raise_error(Puppet::Error, /Must pass/)
+  on_supported_os.each do |os, facts|
+    context "on #{os}" do
+      let(:facts) do
+        facts
       end
-    end
-
-    context 'when passing mandatory parameters' do
-      it { should compile.with_all_deps }
-    end
-  end
-
-  context 'when on RedHat' do
-    let (:facts) { {
-      :operatingsystem => 'RedHat',
-      :osfamily        => 'RedHat',
-      :architecture    => 'i386',
-    } }
-
-    context 'when on unknown RedHat version' do
-      let (:facts) { super().merge({
-        :lsbmajdistrelease => '4',
-      }) }
-
-      it 'should fail' do
-        expect { should compile }.to raise_error(Puppet::Error, /not implemented/)
-      end
-    end
-
-    context 'when on RedHat 5' do
-      let (:facts) { super().merge({
-        :lsbmajdistrelease => '5',
-      }) }
 
       context 'when not passing parameters' do
         let (:params) { { } }
 
         it 'should fail' do
-          expect { should compile }.to raise_error(Puppet::Error, /Must pass/)
+          expect { should compile }.to raise_error(/Must pass/)
         end
       end
 
