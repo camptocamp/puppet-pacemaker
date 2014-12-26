@@ -10,7 +10,9 @@
 # Example usage:
 #   include pacemaker::drbd
 #
+# lint:ignore:inherits_across_namespaces
 class pacemaker::drbd inherits drbd::base {
+# lint:endignore
 
   Service['drbd'] {
     ensure => undef,
