@@ -67,13 +67,13 @@ class pacemaker(
   case $::operatingsystem {
     RedHat: {
 
-      case $::lsbmajdistrelease {
+      case $::operatingsystemmajrelease {
         '5': {
 
           # clusterlabs.org hosts an up to date repository for RHEL.
           yumrepo { 'server_ha-clustering':
-            descr    => "High Availability/Clustering server technologies (RHEL_${::lsbmajdistrelease})",
-            baseurl  => "http://www.clusterlabs.org/rpm/epel-${::lsbmajdistrelease}/",
+            descr    => "High Availability/Clustering server technologies (RHEL_${::operatingsystemmajrelease})",
+            baseurl  => "http://www.clusterlabs.org/rpm/epel-${::operatingsystemmajrelease}/",
             enabled  => 1,
             gpgcheck => 0,
           }
@@ -99,7 +99,7 @@ class pacemaker(
           }
         }
 
-        default: { fail("pacemaker not implemented on ${::operatingsystem} ${::lsbmajdistrelease}")
+        default: { fail("pacemaker not implemented on ${::operatingsystem} ${::operatingsystemmajrelease}")
         }
       }
     }

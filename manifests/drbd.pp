@@ -20,7 +20,7 @@ class pacemaker::drbd inherits drbd::base {
   case $::operatingsystem {
 
     RedHat,CentOS: {
-      case $::lsbmajdistrelease {
+      case $::operatingsystemmajrelease {
         '4','5': { }
         default: {
           selinux::module { 'hadrbd':

@@ -22,7 +22,7 @@ class pacemaker::corosync(
   case $::operatingsystem {
     RedHat: {
 
-      case $::lsbmajdistrelease {
+      case $::operatingsystemmajrelease {
         '6': {
 
           package { 'pacemaker':
@@ -60,7 +60,7 @@ class pacemaker::corosync(
           }
         }
 
-        default: { fail("pacemaker::corosync not implemented on ${::operatingsystem} ${::lsbmajdistrelease}")
+        default: { fail("pacemaker::corosync not implemented on ${::operatingsystem} ${::operatingsystemmajrelease}")
         }
       }
     }
