@@ -54,7 +54,7 @@ class pacemaker::corosync(
             mode   => '0755',
           }
 
-          Service ['corosync'] {
+          Service['corosync'] {
             require => [ Package['corosync'], File['/etc/corosync/authkey'], File['/etc/corosync/corosync.conf'],
                         File['/var/run/crm'], File['/var/run/heartbeat'] ],
           }
@@ -74,7 +74,7 @@ class pacemaker::corosync(
             ensure => present
           }
 
-          Service ['corosync'] {
+          Service['corosync'] {
             require => [ Package['corosync'], File['/etc/corosync/authkey'], File['/etc/corosync/corosync.conf'] ],
           }
 
