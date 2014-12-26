@@ -19,7 +19,7 @@ class pacemaker::drbd inherits drbd::base {
 
   case $::operatingsystem {
 
-    RedHat,CentOS: {
+    'RedHat','CentOS': {
       case $::operatingsystemmajrelease {
         '4','5': { }
         default: {

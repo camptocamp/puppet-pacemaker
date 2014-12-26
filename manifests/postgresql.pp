@@ -14,7 +14,7 @@ class pacemaker::postgresql {
 
   case $::osfamily {
 
-    RedHat: {
+    'RedHat': {
       case $::operatingsystemmajrelease {
 
         '4','5': { }

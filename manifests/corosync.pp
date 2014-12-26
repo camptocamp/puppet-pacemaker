@@ -20,7 +20,7 @@ class pacemaker::corosync(
 ) {
 
   case $::operatingsystem {
-    RedHat: {
+    'RedHat': {
 
       case $::operatingsystemmajrelease {
         '6': {
@@ -65,7 +65,7 @@ class pacemaker::corosync(
       }
     }
 
-    Debian: {
+    'Debian': {
       case $::lsbmajdistrelease {
 
         '6': {

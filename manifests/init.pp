@@ -65,7 +65,7 @@ class pacemaker(
 ) {
 
   case $::operatingsystem {
-    RedHat: {
+    'RedHat': {
 
       case $::operatingsystemmajrelease {
         '5': {
@@ -104,7 +104,7 @@ class pacemaker(
       }
     }
 
-    Debian: {
+    'Debian': {
       package { ['pacemaker', 'heartbeat']:
         ensure => present
       }

@@ -4,7 +4,7 @@
 #
 class pacemaker::nfs {
   case $::operatingsystem {
-    RedHat: {
+    'RedHat': {
 
       case $::operatingsystemmajrelease {
 
