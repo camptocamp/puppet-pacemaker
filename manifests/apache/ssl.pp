@@ -14,11 +14,11 @@ class pacemaker::apache::ssl {
 
   case $::operatingsystem {
 
-    RedHat: {
+    'RedHat': {
       include apache_c2c::ssl::redhat
     }
 
-    Debian: {
+    'Debian': {
       include apache_c2c::ssl::debian
     }
 
