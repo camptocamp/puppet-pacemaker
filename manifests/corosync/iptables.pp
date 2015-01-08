@@ -15,19 +15,8 @@ define pacemaker::corosync::iptables(
   $ip1               = '127.0.0.1',
   $ip2               = '127.0.0.1',
   $corosync_mcast_ip = '127.0.0.1',
-  $mcast_router      = '',
+  $mcast_router      = undef,
 ) {
-
-#  iptables { "allow pacemaker from $name on port $port":
-#    proto => "udp",
-#    dport => $port,
-#    source => $name,
-#    jump => "ACCEPT",
-#  }
-
-  if $mcast_router == '' {
-    $router = regsubst($ip1,'^([.0-9]*)\.[0-9]{1,3}$', '\1.1')
-  }
 
   # open udp and igmp ports for both servers and multicast address
   iptables { "corosync: allow igmp from ${mcast_router} to 224.0.0.1":
