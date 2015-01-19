@@ -16,11 +16,11 @@ class pacemaker::apache {
   case $::operatingsystem {
 
     'RedHat': {
-      include pacemaker::apache::redhat
+      include ::pacemaker::apache::redhat
     }
 
     'Debian': {
-      include pacemaker::apache::debian
+      include ::pacemaker::apache::debian
     }
 
     default: {
