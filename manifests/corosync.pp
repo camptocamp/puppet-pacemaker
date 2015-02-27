@@ -71,7 +71,7 @@ class pacemaker::corosync(
         '6': {
 
           package { ['pacemaker', 'corosync']:
-            ensure => present
+            ensure => present,
           }
 
           Service['corosync'] {
@@ -112,7 +112,7 @@ class pacemaker::corosync(
   }
 
   file { '/etc/logrotate.d/corosync':
-    ensure  => present,
+    ensure  => file,
     owner   => root,
     group   => root,
     content => template( $pacemaker_logrotate_template ),
