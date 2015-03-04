@@ -11,12 +11,10 @@
 #   include pacemaker::mysql
 #
 class pacemaker::mysql (
-  $performance = undef,
-  $config_override = {},
+  $override_options = {},
 ) {
   class {'::mysql::server':
-    performance        => $performance,
-    config_override    => $config_override,
+    override_options   => $override_options,
     unmanaged_password => ($::crm_svc_mysql != $::hostname),
     unmanaged_service  => true,
   }
