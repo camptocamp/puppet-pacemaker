@@ -14,8 +14,8 @@ class pacemaker::mysql (
   $override_options = {},
 ) {
   class {'::mysql::server':
-    override_options   => $override_options,
-    unmanaged_password => ($::crm_svc_mysql != $::hostname),
-    service_manage     => false,
+    override_options => $override_options,
+    create_root_user => ($::crm_svc_mysql == $::hostname),
+    service_manage   => false,
   }
 }
