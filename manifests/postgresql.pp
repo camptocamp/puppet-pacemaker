@@ -22,7 +22,7 @@ class pacemaker::postgresql {
         default: {
 
           selinux::module { 'hapostgresql':
-            source => 'puppet:///modules/pacemaker/selinux/hapostgresql.te',
+            content => file('pacemaker/selinux/hapostgresql.te'),
           }
 
         }

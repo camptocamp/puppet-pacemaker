@@ -35,7 +35,7 @@ class pacemaker::corosync(
           }
 
           selinux::module { 'ha':
-            source  => 'puppet:///modules/pacemaker/selinux/ha.te',
+            content => file('pacemaker/selinux/ha.te'),
             require => Package['corosync'],
           }
 

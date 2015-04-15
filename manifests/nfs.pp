@@ -14,7 +14,7 @@ class pacemaker::nfs {
         default: {
 
           selinux::module { 'hanfs':
-            source  => 'puppet:///modules/pacemaker/selinux/hanfs.te',
+            content => file('pacemaker/selinux/hanfs.te'),
             require => Package['corosync'],
           }
 
