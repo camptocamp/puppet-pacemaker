@@ -157,6 +157,9 @@ class pacemaker(
     file { '/etc/ha.d/crm-config.cli':
       notify  => Exec['reload crm config'],
       source  => $pacemaker_crmcli,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
       require => Package['heartbeat'],
     }
   }
