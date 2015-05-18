@@ -1,14 +1,18 @@
+## 2015-05-18 - Release 1.2.6
+
+- Fix crm facts
+
 ## 2015-05-13 - Release 1.2.5
 
-Add puppet-lint-file_source_rights-check gem
+- Add puppet-lint-file_source_rights-check gem
 
 ## 2015-05-12 - Release 1.2.4
 
-Don't pin beaker
+- Don't pin beaker
 
 ## 2015-04-27 - Release 1.2.3
 
-Add nodeset ubuntu-12.04-x86_64-openstack
+- Add nodeset ubuntu-12.04-x86_64-openstack
 
 ## 2015-04-15 - Release 1.2.2
 
