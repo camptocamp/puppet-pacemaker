@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-pacemaker",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "author": "Camptocamp",
   "summary": "Puppet Pacemaker module",
   "license": "Apache-2.0",
