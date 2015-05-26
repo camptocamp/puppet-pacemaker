@@ -10,15 +10,15 @@ compression              bz2
 coredumps                true
 
 # Communications
-udpport      <%= pacemaker_port %>
-bcast        <%= pacemaker_interface %>
+udpport      <%= @pacemaker_port %>
+bcast        <%= @pacemaker_interface %>
 autojoin     any
 
 # Thresholds (in seconds)
-keepalive    <%= pacemaker_keepalive %>
-warntime     <%= pacemaker_warntime %>
-deadtime     <%= pacemaker_deadtime %>
-initdead     <%= pacemaker_initdead %>
+keepalive    <%= @pacemaker_keepalive %>
+warntime     <%= @pacemaker_warntime %>
+deadtime     <%= @pacemaker_deadtime %>
+initdead     <%= @pacemaker_initdead %>
 
 # use heartbeat v2/pacemaker
 crm yes
