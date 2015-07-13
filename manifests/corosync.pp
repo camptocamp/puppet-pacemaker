@@ -6,15 +6,17 @@ class pacemaker::corosync(
   $corosync_mcast_ip,
   $corosync_mcast_port,
   $corosync_authkey_file,
-  $corosync_conf_template,
   $pacemaker_authkey,
+  $corosync_conf_template       = undef,
+  $corosync_conf_content        = undef,
   $pacemaker_interface          = 'eth0',
   $pacemaker_keepalive          = 1,
   $pacemaker_warntime           = 6,
   $pacemaker_deadtime           = 10,
   $pacemaker_initdead           = 15,
   # For logrotate configuration
-  $pacemaker_logrotate_template = 'pacemaker/corosync.logrotate.erb',
+  $pacemaker_logrotate_template = undef,
+  $pacemaker_logrotate_content  = undef,
   $pacemaker_log_units_hold     = 32,
   $pacemaker_log_time_unit      = 'daily',
 ) {
@@ -95,11 +97,18 @@ class pacemaker::corosync(
     }
   }
 
+  if $corosync_conf_template {
+    warning 'Using $corosync_conf_template is deprecated. Using $corosync_conf_content instead.'
+    $_corosync_conf_content = template($corosync_conf_template)
+  } else {
+    $_corosync_conf_content = $corosync_conf_content
+  }
+
   file { '/etc/corosync/corosync.conf':
     owner   => 'root',
     group   => 'root',
     mode    => '0600',
-    content => template($corosync_conf_template),
+    content => $_corosync_conf_content,
     require => Package['corosync'],
   }
 
@@ -111,11 +120,20 @@ class pacemaker::corosync(
     require => Package['corosync'],
   }
 
+  if $pacemaker_logrotate_template {
+    warning 'Using $pacemaker_logrotate_template is deprecated. Using $pacemaker_logrotate_content instead.'
+    $_pacemaker_logrotate_content = template($pacemaker_logrotate_template)
+  } elsif ($pacemaker_logrotate_content) {
+    $_pacemaker_logrotate_content = $pacemaker_logrotate_content
+  } else {
+    $_pacemaker_logrotate_content = template('pacemaker/corosync.logrotate.erb')
+  }
+
   file { '/etc/logrotate.d/corosync':
     ensure  => file,
     owner   => root,
     group   => root,
-    content => template( $pacemaker_logrotate_template ),
+    content => $_pacemaker_logrotate_content,
     replace => false,
   }
 
