@@ -1,3 +1,7 @@
+## 2015-07-13 - Release 1.3.0
+
+Add _content parameters to replace _template to fix Puppet 4 compatibility
+
 ## 2015-06-26 - Release 1.2.12
 
 Fix strict_variables activation with rspec-puppet 2.2
