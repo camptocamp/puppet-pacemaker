@@ -87,15 +87,15 @@ class pacemaker(
             require => Yumrepo['server_ha-clustering'],
           }
 
-          package { "pacemaker.${::architecture}":
+          package { 'pacemaker':
             ensure  => present,
-            alias   => 'pacemaker',
+            name    => "pacemaker.${::architecture}",
             require => Package['heartbeat'],
           }
 
-          package { "heartbeat.${::architecture}":
+          package { 'heartbeat':
             ensure => present,
-            alias  => 'heartbeat',
+            name   => "heartbeat.${::architecture}",
           }
         }
 
