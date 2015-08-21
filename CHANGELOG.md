@@ -1,3 +1,7 @@
+## 2015-08-21 - Release 1.3.1
+
+Use docker for acceptance tests
+
 ## 2015-07-13 - Release 1.3.0
 
 Add _content parameters to replace _template to fix Puppet 4 compatibility
