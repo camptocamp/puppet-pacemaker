@@ -1,3 +1,7 @@
+## 2016-02-09 - Release 1.3.3
+
+Fix puppet failure on node where pacemaker is stopped (mysql)
+
 ## 2015-10-05 - Release 1.3.2
 
 Add missing @ in template
