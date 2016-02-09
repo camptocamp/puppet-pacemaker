@@ -13,10 +13,18 @@
 class pacemaker::mysql (
   $override_options = {},
 ) {
+
+  if defined('$crm_svc_mysql') {
+    $create_root_user = $::crm_svc_mysql == $::hostname
+  } else {
+    $create_root_user = false
+  }
+
   class {'::mysql::server':
     override_options => $override_options,
-    create_root_user => ($::crm_svc_mysql == $::hostname),
+    create_root_user => $create_root_user,
     service_manage   => false,
     service_enabled  => false,
   }
+
 }

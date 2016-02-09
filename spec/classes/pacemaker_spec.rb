@@ -30,7 +30,7 @@ describe 'pacemaker' do
         let (:params) { { } }
 
         it 'should fail' do
-          expect { should compile }.to raise_error(/Must pass/)
+          expect { should compile }.to raise_error(/Must pass|expects a value for parameter/)
         end
       end
 
