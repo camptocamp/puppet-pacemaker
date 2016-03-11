@@ -9,6 +9,7 @@ class pacemaker::corosync(
   $pacemaker_authkey,
   $corosync_conf_template       = undef,
   $corosync_conf_content        = undef,
+  $corosync_manage_service      = true,
   $pacemaker_interface          = 'eth0',
   $pacemaker_keepalive          = 1,
   $pacemaker_warntime           = 6,
@@ -56,9 +57,11 @@ class pacemaker::corosync(
             mode   => '0755',
           }
 
-          Service['corosync'] {
-            require => [ Package['corosync'], File['/etc/corosync/authkey'], File['/etc/corosync/corosync.conf'],
-                        File['/var/run/crm'], File['/var/run/heartbeat'] ],
+          if $corosync_manage_service {
+            Service['corosync'] {
+              require => [ Package['corosync'], File['/etc/corosync/authkey'], File['/etc/corosync/corosync.conf'],
+                          File['/var/run/crm'], File['/var/run/heartbeat'] ],
+            }
           }
         }
 
@@ -76,8 +79,10 @@ class pacemaker::corosync(
             ensure => present,
           }
 
-          Service['corosync'] {
-            require => [ Package['corosync'], File['/etc/corosync/authkey'], File['/etc/corosync/corosync.conf'] ],
+          if $corosync_manage_service {
+            Service['corosync'] {
+              require => [ Package['corosync'], File['/etc/corosync/authkey'], File['/etc/corosync/corosync.conf'] ],
+            }
           }
 
           augeas { 'corosync start on boot' :
@@ -147,10 +152,12 @@ class pacemaker::corosync(
     replace => false,
   }
 
-  service { 'corosync':
-    ensure    => running,
-    hasstatus => true,
-    enable    => true,
+  if $corosync_manage_service {
+    service { 'corosync':
+      ensure    => running,
+      hasstatus => true,
+      enable    => true,
+    }
   }
 
 }
