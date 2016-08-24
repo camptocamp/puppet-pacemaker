@@ -19,63 +19,63 @@ define pacemaker::corosync::iptables(
 ) {
 
   # open udp and igmp ports for both servers and multicast address
-  iptables { "corosync: allow igmp from ${mcast_router} to 224.0.0.1":
+  fw { "100 corosync: allow igmp from ${mcast_router} to 224.0.0.1":
     proto       => 'igmp',
     source      => $mcast_router,
     destination => '224.0.0.1',
     jump        => 'ACCEPT',
   }
 
-  iptables { "corosync: allow udp from ${mcast_router} to ${corosync_mcast_ip}":
+  fw { "100 corosync: allow udp from ${mcast_router} to ${corosync_mcast_ip}":
     proto       => 'udp',
     source      => $mcast_router,
     destination => $corosync_mcast_ip,
     jump        => 'ACCEPT',
   }
 
-  iptables { "corosync: allow igmp from ${mcast_router} to ${corosync_mcast_ip}":
+  fw { "100 corosync: allow igmp from ${mcast_router} to ${corosync_mcast_ip}":
     proto       => 'igmp',
     source      => $mcast_router,
     destination => $corosync_mcast_ip,
     jump        => 'ACCEPT',
   }
 
-  iptables { "corosync: allow udp from ${ip1} to ${corosync_mcast_ip}":
+  fw { "100 corosync: allow udp from ${ip1} to ${corosync_mcast_ip}":
     proto       => 'udp',
     source      => $ip1,
     destination => $corosync_mcast_ip,
     jump        => 'ACCEPT',
   }
 
-  iptables { "corosync: allow udp from ${ip2} to ${corosync_mcast_ip}":
+  fw { "100 corosync: allow udp from ${ip2} to ${corosync_mcast_ip}":
     proto       => 'udp',
     source      => $ip2,
     destination => $corosync_mcast_ip,
     jump        => 'ACCEPT',
   }
 
-  iptables { "corosync: allow igmp from ${ip1} to ${corosync_mcast_ip}":
+  fw { "100 corosync: allow igmp from ${ip1} to ${corosync_mcast_ip}":
     proto       => 'igmp',
     source      => $ip1,
     destination => $corosync_mcast_ip,
     jump        => 'ACCEPT',
   }
 
-  iptables { "corosync: allow igmp from ${ip2} to ${corosync_mcast_ip}":
+  fw { "100 corosync: allow igmp from ${ip2} to ${corosync_mcast_ip}":
     proto       => 'igmp',
     source      => $ip2,
     destination => $corosync_mcast_ip,
     jump        => 'ACCEPT',
   }
 
-  iptables { "corosync: allow udp from ${ip1}, to ${ip2}":
+  fw { "100 corosync: allow udp from ${ip1}, to ${ip2}":
     proto       => 'udp',
     source      => $ip1,
     destination => $ip2,
     jump        => 'ACCEPT',
   }
 
-  iptables { "corosync: allow udp from ${ip2}, to ${ip1}":
+  fw { "100 corosync: allow udp from ${ip2}, to ${ip1}":
     proto       => 'udp',
     source      => $ip2,
     destination => $ip1,
