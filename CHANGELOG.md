@@ -1,3 +1,8 @@
+## 2016-08-24 - Release 2.0.0
+
+Deprecate module
+Use fw private define instead of iptables for transition purpose
+
 ## 2016-03-11 - Release 1.3.4
 
 Add param to not manage corosync service
