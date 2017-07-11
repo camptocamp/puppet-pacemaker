@@ -62,6 +62,7 @@ class pacemaker(
   $pacemaker_deadtime  = '10',
   $pacemaker_initdead  = '15',
   $pacemaker_crmcli    = undef,
+  $manage_repos        = true,
 ) {
 
   case $::operatingsystem {
@@ -70,21 +71,23 @@ class pacemaker(
       case $::operatingsystemmajrelease {
         '5': {
 
-          # clusterlabs.org hosts an up to date repository for RHEL.
-          yumrepo { 'server_ha-clustering':
-            descr    => "High Availability/Clustering server technologies (RHEL_${::operatingsystemmajrelease})",
-            baseurl  => "http://www.clusterlabs.org/rpm/epel-${::operatingsystemmajrelease}/",
-            enabled  => 1,
-            gpgcheck => 0,
-          }
+          if $manage_repos {
+            # clusterlabs.org hosts an up to date repository for RHEL.
+            yumrepo { 'server_ha-clustering':
+              descr    => "High Availability/Clustering server technologies (RHEL_${::operatingsystemmajrelease})",
+              baseurl  => "http://www.clusterlabs.org/rpm/epel-${::operatingsystemmajrelease}/",
+              enabled  => 1,
+              gpgcheck => 0,
+            }
 
-          # ensure file is managed in case we want to purge /etc/yum.repos.d/
-          # http://projects.puppetlabs.com/issues/3152
-          file { '/etc/yum.repos.d/server_ha-clustering.repo':
-            ensure  => file,
-            mode    => '0644',
-            owner   => 'root',
-            require => Yumrepo['server_ha-clustering'],
+            # ensure file is managed in case we want to purge /etc/yum.repos.d/
+            # http://projects.puppetlabs.com/issues/3152
+            file { '/etc/yum.repos.d/server_ha-clustering.repo':
+              ensure  => file,
+              mode    => '0644',
+              owner   => 'root',
+              require => Yumrepo['server_ha-clustering'],
+            }
           }
 
           package { 'pacemaker':
